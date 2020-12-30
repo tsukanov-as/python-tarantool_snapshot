@@ -1,4 +1,6 @@
 import os
+import sys
+import platform
 
 BUILD_STATIC = True
 
@@ -63,7 +65,15 @@ module1 = Extension('tarantool_snapshot',
                     sources = sources,
                     extra_link_args = extra_link_args)
 
-setup (name = 'Tarantool snapshot',
+if platform.python_implementation() == "PyPy":
+    interpreter = "pypy"
+else:
+    interpreter = "python"
+
+if sys.version_info.major == 3:
+    interpreter += "3"
+
+setup (name = '%s-tarantool-snapshot' % interpreter,
     description = 'Tarantool snapshot reader',
     version='1.0',
     author='Lomonosov Roman',
